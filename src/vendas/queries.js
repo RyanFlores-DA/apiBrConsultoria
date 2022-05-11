@@ -1,16 +1,14 @@
-//Queries Lojas
-const getLojas = "SELECT * FROM loja";
-const getLojasById = "SELECT * FROM loja WHERE id = $1";
-const validaLoja = "SELECT l FROM loja l WHERE l.loja = $1";
-const addLojas = "INSERT INTO loja (loja) VALUES ($1)";
-const deleteLoja = "DELETE FROM loja WHERE id = $1";
-const updateLoja = "UPDATE loja set loja = $1 WHERE id = $2";
+//Queries Vendas
+const getVendasByDataI = "SELECT vd.id, vd.ncartao as NumeroCartao, vd.vbruto as ValorBruto, vd.vliquido as ValorLiquido, vd.dinicial as DataInicial, vd.dfinal as DataFinal, m.modal as Modalidade, vd.bandeira as Bandeira, l.loja as Loja FROM vendas as vd INNER JOIN loja as l ON l.id = vd.fkloja INNER JOIN modalidade as m ON m.id = vd.fkmodalidade ORDER BY Datainicial;"; // Ordenado pela Data Inicial
+const getVendasByDataF = "SELECT vd.id, vd.ncartao as NumeroCartao, vd.vbruto as ValorBruto, vd.vliquido as ValorLiquido, vd.dinicial as DataInicial, vd.dfinal as DataFinal, m.modal as Modalidade, vd.bandeira as Bandeira, l.loja as Loja FROM vendas as vd INNER JOIN loja as l ON l.id = vd.fkloja INNER JOIN modalidade as m ON m.id = vd.fkmodalidade ORDER BY DataFinal;"; // Ordenado pela Data Inicial
+const getVendasById = "SELECT * FROM vendas WHERE id = $1";
+const addVenda = "INSERT INTO vendas (ncartao, vbruto, vliquido, dinicial, dfinal, fkmodalidade, bandeira, fkloja) VALUES ($1,$2,$3,$4,$5,$6,$7,$8);";
+const deleteVenda = "DELETE FROM vendas WHERE id = $1";
 
 module.exports = {
-    getLojas,
-    getLojasById,
-    validaLoja,
-    addLojas,
-    deleteLoja,
-    updateLoja,
+    getVendasByDataI,
+    getVendasByDataF,
+    getVendasById,
+    addVenda,
+    deleteVenda,
 };

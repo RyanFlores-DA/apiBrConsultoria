@@ -3,11 +3,12 @@ const controller = require('./controller');
 
 const router = Router();
 
-//Rotas de lojas
-router.get('/', controller.getLojas);
-router.post('/', controller.addLojas);
-router.get('/:id', controller.getLojasById);
-router.delete('/:id', controller.deleteLoja);
-router.put('/:id', controller.updateLoja);
+//Rotas de vendas
+router.get('/DataI/', controller.getVendasByDataI);//Listar por dataInicial
+router.get('/DataF/', controller.getVendasByDataF);//Listar por dataFinal
+router.get('/:id', controller.getVendasById);
+router.post('/', controller.addVenda)
+router.delete('/:id', controller.deleteVenda);
+
 
 module.exports = router;

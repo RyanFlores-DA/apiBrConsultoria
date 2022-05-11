@@ -1,4 +1,5 @@
 const express = require('express');
+const lojasRoutes = require('./src/lojas/routes');
 const vendasRoutes = require('./src/vendas/routes');
 const res = require('express/lib/response');
 
@@ -11,6 +12,7 @@ app.get("/", (req, res) =>{
     res.send("Hello World");
 });
 
-app.use('/api/v1/lojas', vendasRoutes);
+app.use('/lojas', lojasRoutes);
+app.use('/vendas', vendasRoutes);
 
 app.listen(port, () => console.log('app listening on port ' + port));

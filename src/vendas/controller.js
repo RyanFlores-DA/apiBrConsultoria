@@ -2,74 +2,57 @@ const { response } = require('express');
 const pool = require('../../db');
 const queries = require('./queries');
 
-//Listar todas as Lojas
-const getLojas = (req, res) =>{
-    pool.query(queries.getLojas, (error, results) =>{
+//Listar todas as vendas pela DataI
+const getVendasByDataI = (req, res) => {
+    pool.query(queries.getVendasByDataI, (error, results) => {
         if (error) throw error;
         res.status(200).json(results.rows);
     });
 };
-
-//Localizar loja pelo endereço
-const getLojasById = (req,res) =>{
+//Listar todas as vendas pela DataF
+const getVendasByDataF = (req, res) => {
+    pool.query(queries.getVendasByDataF, (error, results) => {
+        if (error) throw error;
+        res.status(200).json(results.rows);
+    });
+};
+//Localizar vendas pelo id
+const getVendasById = (req, res) => {
     const id = parseInt(req.params.id);
     pool.query(queries.getLojasById, [id], (error, results) => {
-        if(error) throw error;
+        if (error) throw error;
         res.status(200).json(results.rows);
     });
 }
-
-//Add Loja
-const addLojas = (req, res) =>{
-    const {loja} = req.body;
-    //Validacao
-    pool.query(queries.validaLoja, [loja], (error, results) =>{
-        if(results.rows.length){
-            res.send("Loja já está cadastrada!");
-        }
-        
-        pool.query(queries.addLojas, [loja], (error, results) =>{
-            if(error) throw error;
-            res.status(201).send("Loja adicionada com sucesso!");
-        });
+//Add venda
+const addVenda = (req, res) => {
+    const {ncartao, vbruto, vliquido, dinicial, dfinal, fkmodalidade, bandeira, fkloja} = req.body;
+    pool.query(queries.addVenda, [ncartao, vbruto, vliquido, dinicial, dfinal, fkmodalidade, bandeira, fkloja], (error, results) => {
+        if (error) throw error;
+        res.status(201).send("Venda adicionada com sucesso!");
     });
-}
 
-//Delete Loja
-const deleteLoja = (req,res) =>{
+}
+//Delete venda
+const deleteVenda = (req, res) => {
     const id = parseInt(req.params.id);
-    pool.query(queries.deleteLoja, [id], (error, results) =>{
+    pool.query(queries.deleteVenda, [id], (error, results) => {
         const noCadLoja = !results.rows.length;
-        if(noCadLoja){
-            res.send("Loja não existe na base de dados!");
+        if (noCadLoja) {
+            res.send("Essa Venda não existe!");
         }
 
-        pool.query(queries.deleteLoja, [id], (error, results) =>{
-            if(error) throw error;
-            res.status(200).send("Loja deletada com sucesso!");
+        pool.query(queries.deleteLoja, [id], (error, results) => {
+            if (error) throw error;
+            res.status(200).send("Venda deletada com sucesso!");
         })
     });
 }
 
-//Atualizar Lojas
-const updateLoja = (req,res) =>{
-    const id = parseInt(req.params.id);
-    const { loja } = req.body;
-
-    pool.query(queries.getLojasById, [id], (error, results) => {
-        res.send("Loja não existe na base de dados!");
-    });
-
-    pool.query(queries.updateLoja, [loja, id], (error, results) => {
-        if(error) throw error;
-        res.status(200).sed("Loja Atualizada com sucesso!");
-    });
-}
-
 module.exports = {
-    getLojas,
-    getLojasById,
-    addLojas,
-    deleteLoja,
-    updateLoja,
+    getVendasByDataI,
+    getVendasByDataF,
+    getVendasById,
+    addVenda,
+    deleteVenda,
 };
