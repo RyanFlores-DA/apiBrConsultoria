@@ -19,14 +19,18 @@ const getVendasByDataF = (req, res) => {
 //Localizar vendas pelo id
 const getVendasById = (req, res) => {
     const id = parseInt(req.params.id);
-    pool.query(queries.getLojasById, [id], (error, results) => {
+    pool.query(queries.getVendasById, [id], (error, results) => {
         if (error) throw error;
         res.status(200).json(results.rows);
+        
+        let conPaginadas = [];
+        conPaginadas.push(results.rows);
+        //console.log(conPaginadas);
     });
 }
 //Add venda
 const addVenda = (req, res) => {
-    const {ncartao, vbruto, vliquido, dinicial, dfinal, fkmodalidade, bandeira, fkloja} = req.body;
+    const { ncartao, vbruto, vliquido, dinicial, dfinal, fkmodalidade, bandeira, fkloja } = req.body;
     pool.query(queries.addVenda, [ncartao, vbruto, vliquido, dinicial, dfinal, fkmodalidade, bandeira, fkloja], (error, results) => {
         if (error) throw error;
         res.status(201).send("Venda adicionada com sucesso!");
